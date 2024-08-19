@@ -5,29 +5,56 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import axios from "axios";
+import Register from "./Register";
 
-export default function Login() {
-  const [name, setname] = useState("");
+export default function Login({ navigation }) {
+  const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
- 
+  const [mode, setmode] = useState(false);
+  const handleSubmit = () => {
+    console.log(email, password);
+   
+    const loginData = {
+      email: email,
+      password: password,
+    };
+    axios
+      .post("http://192.168.0.210:8080/login", loginData)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  };
+  const handleMode = () => {
+    setmode(!mode)
+  };
   
 
-
-
   return (
-    <View style={styles.container}>
-      {/* <Image source={require("./assets/logIn.png")} style={styles.logo} /> */}
+    <View style= {mode?styles.containerDark:styles.containerLight}>
+      <Pressable  onPress={handleMode}>
+
+      <Image
+        source={
+          mode
+          ? require(".././assets/dark.png")
+          : require(".././assets/light.png")
+        }
+        style={styles.sun}
+       
+        />
+        </Pressable>
+      <Image source={require(".././assets/logIn.png")} style={styles.logo} />
       <Text style={styles.header}>logIn</Text>
 
       <View style={styles.field}>
         <TextInput
           style={styles.input}
-          placeholder="enter user name"
-          value={name}
-          onChangeText={(e) => setname(e)}
+          placeholder="enter user email"
+          value={email}
+          onChangeText={(e) => setemail(e)}
         />
         <TextInput
           style={styles.input}
@@ -43,16 +70,24 @@ export default function Login() {
         </TouchableOpacity>
       </View>
       <View>
-        <Text onPress={() => console.log("register page")}>
-          not a user register
+        <Text onPress={() => navigation.navigate("register")}>
+          not a user <Text style={styles.link}>register</Text>
         </Text>
       </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
-  container: {
+  containerLight: {
     flex: 1,
+    backgroundColor: "white",
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  containerDark: {
+    flex: 1,
+    backgroundColor: "black",
 
     justifyContent: "center",
     alignItems: "center",
@@ -61,17 +96,18 @@ const styles = StyleSheet.create({
     height: 320,
     width: 320,
     position: "absolute",
-    top: 0,
+    // top: 0,
     marginTop: 100,
   },
   header: {
     fontSize: 35,
     fontWeight: "bold",
     color: "skyblue",
-    marginTop: 200,
+    marginTop: 300,
+    // backgroundColor:"red",
+    // paddingTop:300,
   },
   input: {
-    // backgroundColor:"grey",
     width: 350,
     height: 50,
     borderColor: "skyblue",
@@ -79,27 +115,43 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     textAlign: "center",
     fontWeight: "bold",
-    margin: 5,
+    marginTop: 10,
   },
   field: {
-    // backgroundColor:"red",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 150,
   },
   touch: {
     backgroundColor: "skyblue",
     width: 350,
     height: 50,
     borderRadius: 20,
-    marginTop: 20,
+    marginTop: 10,
   },
   btn: {
     textAlign: "center",
     fontWeight: "bold",
-    // fontWeight:20,
+
     justifyContent: "center",
     alignContent: "center",
     paddingTop: 10,
+    bottom: 0,
+  },
+  link: {
+    color: "red",
+    bottom: 0,
+  },
+  light: {
+    backgroundColor: "white",
+  },
+  dark: {
+    backgroundColor: "black",
+  },
+  sun: {
+    width: 35,
+    height: 35,
+   
+    left:150,
   },
 });

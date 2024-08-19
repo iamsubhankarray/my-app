@@ -1,37 +1,25 @@
 import { useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import Register from './screens/Register'
-
-
+import { View,StyleSheet, } from "react-native";
+import Register from "./screens/Register";
+import Login from "./screens/Login";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
  
-  
-
+ const stack =createStackNavigator()
   return (
-    <View style={styles.container}>
-     <Register/>
-    </View>
+   
+      <NavigationContainer>
+
+      <stack.Navigator>
+        <stack.Screen name="register" component={Register}/>
+        <stack.Screen name="login" component={Login}/>
+      </stack.Navigator>
+
+      </NavigationContainer>
+    
+    
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor:"black",
 
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  header:{
-    backgroundColor:"white",
-    fontSize:200,
-    fontWeight:700,
-  }
-});

@@ -10,14 +10,14 @@ import {
 } from "react-native";
 import axios from "axios";
 
-export default function Register() {
+export default function Register({navigation}) {
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [mobile, setmobile] = useState("");
 
   const handleSubmit = async () => {
-    const userData = {
+    const registerData = {
       name: name,
       email: email,
       password: password,
@@ -25,11 +25,10 @@ export default function Register() {
     };
 
     axios
-      .post("http://192.168.0.210:8000/register", userData)
+      .post("http://192.168.0.210:8000/register", registerData)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err))
-      .get("http://192.168.0.210:8000/register").then((res)=>console.log(res.message)).catch(err=>console.log(err)
-      )
+      
   };
 
   return (
@@ -69,8 +68,8 @@ export default function Register() {
           </TouchableOpacity>
         </View>
         <View>
-          <Text onPress={() => console.log("register page")}>
-            not a user register
+          <Text onPress={() =>navigation.navigate('login') }>
+            not a user <Text style={styles.link}>login</Text>
           </Text>
         </View>
       </View>
@@ -80,6 +79,7 @@ export default function Register() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"white",
 
     justifyContent: "center",
     alignItems: "center",
@@ -95,8 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: "bold",
     color: "skyblue",
-    // backgroundColor:"pink",
-    // top:,
+   
   },
   input: {
     backgroundColor: "#969693",
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   field: {
-    // backgroundColor:"red",
+  
     justifyContent: "center",
     alignItems: "center",
     marginTop: 350,
@@ -125,9 +124,12 @@ const styles = StyleSheet.create({
   btn: {
     textAlign: "center",
     fontWeight: "bold",
-    // fontWeight:20,
+   
     justifyContent: "center",
     alignContent: "center",
     paddingTop: 10,
   },
+  link:{
+    color:"red"
+  }
 });
