@@ -3,19 +3,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const Home = () => {
-  const [product, setproduct] = useState([]);
+  const [user, setuser] = useState([]);
   const getData = async () => {
     await axios
-      .get("http://192.168.0.210:8000/products")
-      .then((res) => setproduct(res.data))
+      .get("http://192.168.0.210:8000/users")
+      .then((res) => setuser(res.data))
       // .then((res) =>console.log(res.data))
       .catch((err) => console.log("error", err));
   };
 
   useEffect(() => {
     getData();
-  }, []);
-  // console.table(product);
+  }, [user]);
+ 
 
   return (
     <>
@@ -23,12 +23,12 @@ const Home = () => {
     <ScrollView style={styles.container}>
       <View style={styles.body}></View>
       
-      {product.map((i) => (
-        <View style={styles.main}>
-          <View key={i.id} style={styles.card}>
-            <Image source={i.image_url} style={styles.img} />
+      {user.map((i) => (
+        <View style={styles.main}key={i._id}>
+          <View  style={styles.card}>
             <Text>{i.name}</Text>
-            <Text>{i.price}</Text>
+            <Text>{i.email}</Text>
+            <Text>{i.mobile}</Text>
           </View>
         </View>
       ))}
