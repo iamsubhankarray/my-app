@@ -48,8 +48,10 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "lightgrey",
-    height: 150,
-    width: 150,
+    height: "auto",
+    width: "100%",
+    padding:10,
+    paddingBottom:20,
     
    
     justifyContent:"center",

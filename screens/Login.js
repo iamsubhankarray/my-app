@@ -10,42 +10,40 @@ import {
 } from "react-native";
 import axios from "axios";
 import Register from "./Register";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Login({ navigation }) {
+export default  function Login(){
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [mode, setmode] = useState(false);
+  const  navigation=useNavigation()
+  
   const handleSubmit = () => {
-    console.log(email, password);
-   
     const loginData = {
       email: email,
       password: password,
     };
-    axios
+     axios
       .post("http://192.168.0.210:8080/login", loginData)
-      .then((res) => console.log(res.data))
+      .then(res=>res.data.message==="ok"?navigation.navigate('home'):null)
       .catch((err) => console.log(err));
   };
   const handleMode = () => {
-    setmode(!mode)
+    setmode(!mode);
   };
-  
 
   return (
-    <View style= {mode?styles.containerDark:styles.containerLight}>
-      <Pressable  onPress={handleMode}>
-
-      <Image
-        source={
-          mode
-          ? require(".././assets/dark.png")
-          : require(".././assets/light.png")
-        }
-        style={styles.sun}
-       
+    <View style={mode ? styles.containerDark : styles.containerLight}>
+      <Pressable onPress={handleMode}>
+        <Image
+          source={
+            mode
+              ? require(".././assets/dark.png")
+              : require(".././assets/light.png")
+          }
+          style={styles.sun}
         />
-        </Pressable>
+      </Pressable>
       <Image source={require(".././assets/logIn.png")} style={styles.logo} />
       <Text style={styles.header}>logIn</Text>
 
@@ -80,17 +78,18 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   containerLight: {
     flex: 1,
+    alignItems:"center",
     backgroundColor: "white",
 
-    justifyContent: "center",
+   
     alignItems: "center",
   },
   containerDark: {
     flex: 1,
     backgroundColor: "black",
+    alignItems:"center",
 
-    justifyContent: "center",
-    alignItems: "center",
+   
   },
   logo: {
     height: 320,
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
   sun: {
     width: 35,
     height: 35,
-   
-    left:150,
+
+    left: 150,
   },
 });
