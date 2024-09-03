@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -11,39 +11,34 @@ import {
 import axios from "axios";
 import Register from "./Register";
 import { useNavigation } from "@react-navigation/native";
+import asyncStorage from "@react-native-async-storage/async-storage";
 
-export default  function Login(){
+export default function Login() {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const [mode, setmode] = useState(false);
-  const  navigation=useNavigation()
-  
+  const [token, settoken] = useState("");
+
+  const navigation = useNavigation();
+
   const handleSubmit = () => {
     const loginData = {
-      email: email,
-      password: password,
+      email,
+      password,
     };
-     axios
+    // const setlogin = async () => {
+    //   await asyncStorage.setItem("logged", JSON.stringify(true));
+    // };
+
+    axios
       .post("http://192.168.0.210:8080/login", loginData)
-      .then(res=>res.data.message==="ok"?navigation.navigate('home'):null)
+      .then((res) => console.log(res.data.token))
       .catch((err) => console.log(err));
-  };
-  const handleMode = () => {
-    setmode(!mode);
+    setemail("");
+    setpassword("");
   };
 
   return (
-    <View style={mode ? styles.containerDark : styles.containerLight}>
-      <Pressable onPress={handleMode}>
-        <Image
-          source={
-            mode
-              ? require(".././assets/dark.png")
-              : require(".././assets/light.png")
-          }
-          style={styles.sun}
-        />
-      </Pressable>
+    <View style={styles.containerLight}>
       <Image source={require(".././assets/logIn.png")} style={styles.logo} />
       <Text style={styles.header}>logIn</Text>
 
@@ -51,13 +46,14 @@ export default  function Login(){
         <TextInput
           style={styles.input}
           placeholder="enter user email"
+          keyboardType="email-address"
           value={email}
           onChangeText={(e) => setemail(e)}
         />
         <TextInput
           style={styles.input}
           placeholder="enter enter password"
-          keyboardType="number"
+          secureTextEntry={true}
           value={password}
           onChangeText={(e) => setpassword(e)}
         />
@@ -78,19 +74,12 @@ export default  function Login(){
 const styles = StyleSheet.create({
   containerLight: {
     flex: 1,
-    alignItems:"center",
+    alignItems: "center",
     backgroundColor: "white",
 
-   
     alignItems: "center",
   },
-  containerDark: {
-    flex: 1,
-    backgroundColor: "black",
-    alignItems:"center",
 
-   
-  },
   logo: {
     height: 320,
     width: 320,
