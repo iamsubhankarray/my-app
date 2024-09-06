@@ -44,13 +44,13 @@ const Home = () => {
     getData();
   }, [filteredData]);
 
-  if (user.length === 0) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size={50} color={"grey"} />
-      </View>
-    );
-  }
+  // if (user.length === 0) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  //       <ActivityIndicator size={50} color={"grey"} />
+  //     </View>
+  //   );
+  
 
   return (
     <>
@@ -81,10 +81,13 @@ const Home = () => {
               marginVertical:10,
               width:"auto",
               borderColor:"skyblue",
-              borderWidth:5,}}>
+              borderWidth:5,
+              justifyContent:"center",
+              alignItems:"center"}}>
+               
+            <Text>{`id: ${item.id}`}</Text>
             <Text>{`name: ${item.name}`}</Text>
-            <Text>{`email: ${item.email}`}</Text>
-            <Text>{`mobile: ${item.mobile}`}</Text>
+            <Text>{`price: ${item.price}`}</Text>
             </View>
           )}
            />

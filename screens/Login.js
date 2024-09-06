@@ -13,30 +13,36 @@ import Register from "./Register";
 import { useNavigation } from "@react-navigation/native";
 import asyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Login() {
+export default function Login(props) {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const [token, settoken] = useState("");
+ 
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     const loginData = {
       email,
       password,
     };
-    // const setlogin = async () => {
-    //   await asyncStorage.setItem("logged", JSON.stringify(true));
-    // };
+   
 
-    axios
+    await axios
       .post("http://192.168.0.210:8080/login", loginData)
-      .then((res) => console.log(res.data.token))
+       .then((res)=>{
+        if(res.data.message==200){
+          props.navigation.replace('test')
+          // console.log(props);
+          
+        }
+       })
+      
       .catch((err) => console.log(err));
     setemail("");
     setpassword("");
+    
   };
-
+  
   return (
     <View style={styles.containerLight}>
       <Image source={require(".././assets/logIn.png")} style={styles.logo} />
@@ -53,7 +59,7 @@ export default function Login() {
         <TextInput
           style={styles.input}
           placeholder="enter enter password"
-          secureTextEntry={true}
+          // secureTextEntry={true}
           value={password}
           onChangeText={(e) => setpassword(e)}
         />
@@ -64,7 +70,7 @@ export default function Login() {
         </TouchableOpacity>
       </View>
       <View>
-        <Text onPress={() => navigation.navigate("register")}>
+        <Text onPress={() => props.navigation.navigate("register")}>
           not a user <Text style={styles.link}>register</Text>
         </Text>
       </View>
